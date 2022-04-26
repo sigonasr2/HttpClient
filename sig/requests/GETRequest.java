@@ -1,6 +1,5 @@
 package sig.requests;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -59,7 +58,9 @@ public class GETRequest{
             .headers(headers)
             .timeout(Duration.ofMillis(timeout))
             .GET().build();
-            client = HttpClient.newBuilder().build();
+            client = HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.ALWAYS)
+            .build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
