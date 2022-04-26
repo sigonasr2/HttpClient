@@ -1,11 +1,14 @@
 package sig.requests;
 
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpClient.Builder;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -17,18 +20,29 @@ public class GETRequest{
     String[] headers;
     long timeout;
     Path file;
+    String user="";
+    String pass="";
     private HttpRequest req;
     private HttpClient client;
     /**
      * @param file The file path info, use this for file downloads or set to null for standard text.
      * @param timeout in milliseconds
      * */
-    public GETRequest(String url, long timeout, Path file, String...headers){
+    public GETRequest(String url, String username, String password, long timeout, Path file, String...headers){
         this.url = url;
+        this.user=username;
+        this.pass=password;
         this.headers = headers;
         this.timeout = timeout;
         this.file=file;
         build();
+    }
+    /**
+     * @param file The file path info, use this for file downloads or set to null for standard text.
+     * @param timeout in milliseconds
+     * */
+    public GETRequest(String url, long timeout, Path file, String...headers){
+        this(url,"","",timeout,file,headers);
     }
     /**
      * @param timeout in milliseconds
@@ -37,7 +51,7 @@ public class GETRequest{
         this(url,timeout,null,headers);
     }
     public GETRequest(String url){
-        this(url,30000,"default","default");
+        this(url,30000,null);
     }
     public HttpResponse<?> run() throws FailedResponseException {
         try {
@@ -52,15 +66,27 @@ public class GETRequest{
         throw new FailedResponseException("No proper response returned. THIS SHOULD NOT BE HAPPENING!");
     }
     private void build(){
+        boolean AUTH_REQUIRED=user.length()>0&&pass.length()>0;
         try {
-            req = HttpRequest.newBuilder(new URI(url))
+            java.net.http.HttpRequest.Builder requestBuild=HttpRequest.newBuilder(new URI(url))
             .version(HttpClient.Version.HTTP_2)
-            .headers(headers)
             .timeout(Duration.ofMillis(timeout))
-            .GET().build();
-            client = HttpClient.newBuilder()
-            .followRedirects(HttpClient.Redirect.ALWAYS)
-            .build();
+            .GET();
+            if (headers!=null&&headers.length>0) {
+                requestBuild.headers(headers);
+            }
+            req = requestBuild.build();
+            Builder clientBuild=HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.ALWAYS);
+            if (AUTH_REQUIRED) {
+                clientBuild.authenticator(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(user,pass.toCharArray());
+                    }
+                });
+            }
+            client = clientBuild.build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
