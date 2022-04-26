@@ -35,7 +35,6 @@ public class GETRequest{
         this.headers = headers;
         this.timeout = timeout;
         this.file=file;
-        build();
     }
     /**
      * @param file The file path info, use this for file downloads or set to null for standard text.
@@ -54,6 +53,7 @@ public class GETRequest{
         this(url,30000,null);
     }
     public HttpResponse<?> run() throws FailedResponseException {
+        build();
         try {
             if (file==null) {
                 return client.send(req,BodyHandlers.ofString());
@@ -65,17 +65,22 @@ public class GETRequest{
         }
         throw new FailedResponseException("No proper response returned. THIS SHOULD NOT BE HAPPENING!");
     }
-    private void build(){
+    protected java.net.http.HttpRequest.Builder finalizeRequestPreBuild(java.net.http.HttpRequest.Builder requestBuild) throws FailedResponseException {
+        return requestBuild.GET();
+    }
+    protected Builder finalizeClientPreBuild(Builder clientBuild) {
+        return clientBuild;
+    }
+    protected void build(){
         boolean AUTH_REQUIRED=user.length()>0&&pass.length()>0;
         try {
             java.net.http.HttpRequest.Builder requestBuild=HttpRequest.newBuilder(new URI(url))
             .version(HttpClient.Version.HTTP_2)
-            .timeout(Duration.ofMillis(timeout))
-            .GET();
+            .timeout(Duration.ofMillis(timeout));
             if (headers!=null&&headers.length>0) {
                 requestBuild.headers(headers);
             }
-            req = requestBuild.build();
+            req = finalizeRequestPreBuild(requestBuild).build();
             Builder clientBuild=HttpClient.newBuilder()
             .followRedirects(HttpClient.Redirect.ALWAYS);
             if (AUTH_REQUIRED) {
@@ -86,8 +91,8 @@ public class GETRequest{
                     }
                 });
             }
-            client = clientBuild.build();
-        } catch (URISyntaxException e) {
+            client = finalizeClientPreBuild(clientBuild).build();
+        } catch (URISyntaxException | FailedResponseException e) {
             e.printStackTrace();
         }
     }
