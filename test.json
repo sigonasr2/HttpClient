@@ -1,0 +1,105 @@
+{
+    "args": {},
+    "data": {
+        "args": {},
+        "data": {
+            "args": {
+                "foo1": "bar1",
+                "foo2": "bar2"
+            },
+            "headers": {
+                "x-forwarded-proto": "https",
+                "x-forwarded-port": "443",
+                "host": "postman-echo.com",
+                "x-amzn-trace-id": "Root=1-6268427f-1fb34bbf61bee0cc55bcfced",
+                "default": "value",
+                "user-agent": "Java-http-client/11.0.13"
+            },
+            "url": "https://postman-echo.com/get?foo1=bar1&foo2=bar2"
+        },
+        "files": {},
+        "form": {},
+        "headers": {
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "postman-echo.com",
+            "x-amzn-trace-id": "Root=1-6287d143-6d0b63bb5323290e00ed4cdd",
+            "content-length": "305",
+            "content-type": "application/json",
+            "user-agent": "Java-http-client/11.0.13"
+        },
+        "json": {
+            "args": {
+                "foo1": "bar1",
+                "foo2": "bar2"
+            },
+            "headers": {
+                "x-forwarded-proto": "https",
+                "x-forwarded-port": "443",
+                "host": "postman-echo.com",
+                "x-amzn-trace-id": "Root=1-6268427f-1fb34bbf61bee0cc55bcfced",
+                "default": "value",
+                "user-agent": "Java-http-client/11.0.13"
+            },
+            "url": "https://postman-echo.com/get?foo1=bar1&foo2=bar2"
+        },
+        "url": "https://postman-echo.com/post"
+    },
+    "files": {},
+    "form": {},
+    "headers": {
+        "x-forwarded-proto": "https",
+        "x-forwarded-port": "443",
+        "host": "postman-echo.com",
+        "x-amzn-trace-id": "Root=1-6287d178-5fa9648d07a57aa20d5b8e0f",
+        "content-length": "945",
+        "content-type": "application/json",
+        "user-agent": "Java-http-client/11.0.13"
+    },
+    "json": {
+        "args": {},
+        "data": {
+            "args": {
+                "foo1": "bar1",
+                "foo2": "bar2"
+            },
+            "headers": {
+                "x-forwarded-proto": "https",
+                "x-forwarded-port": "443",
+                "host": "postman-echo.com",
+                "x-amzn-trace-id": "Root=1-6268427f-1fb34bbf61bee0cc55bcfced",
+                "default": "value",
+                "user-agent": "Java-http-client/11.0.13"
+            },
+            "url": "https://postman-echo.com/get?foo1=bar1&foo2=bar2"
+        },
+        "files": {},
+        "form": {},
+        "headers": {
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "postman-echo.com",
+            "x-amzn-trace-id": "Root=1-6287d143-6d0b63bb5323290e00ed4cdd",
+            "content-length": "305",
+            "content-type": "application/json",
+            "user-agent": "Java-http-client/11.0.13"
+        },
+        "json": {
+            "args": {
+                "foo1": "bar1",
+                "foo2": "bar2"
+            },
+            "headers": {
+                "x-forwarded-proto": "https",
+                "x-forwarded-port": "443",
+                "host": "postman-echo.com",
+                "x-amzn-trace-id": "Root=1-6268427f-1fb34bbf61bee0cc55bcfced",
+                "default": "value",
+                "user-agent": "Java-http-client/11.0.13"
+            },
+            "url": "https://postman-echo.com/get?foo1=bar1&foo2=bar2"
+        },
+        "url": "https://postman-echo.com/post"
+    },
+    "url": "https://postman-echo.com/post"
+}
