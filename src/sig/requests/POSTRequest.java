@@ -1,22 +1,16 @@
 package sig.requests;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.URI;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.net.http.HttpClient.Builder;
+import java.net.http.HttpClient.Version;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
+
+import javax.net.ssl.SSLSession;
 
 import sig.exceptions.FailedResponseException;
 
@@ -49,7 +43,47 @@ public class POSTRequest extends GETRequest{
         super(url);
         this.uploadFile=uploadFile;
     }
-
+    @Override
+    public HttpResponse<?> run() throws FailedResponseException {
+        if (uploadFile!=null) {
+            return new HttpResponse<String>(){
+                @Override
+                public int statusCode() {
+                    return 0;
+                }
+                @Override
+                public HttpRequest request() {
+                    return null;
+                }
+                @Override
+                public Optional<HttpResponse<String>> previousResponse() {
+                    return null;
+                }
+                @Override
+                public HttpHeaders headers() {
+                    return null;
+                }
+                @Override
+                public String body() {
+                    return "Response";
+                }
+                @Override
+                public Optional<SSLSession> sslSession() {
+                    return null;
+                }
+                @Override
+                public URI uri() {
+                    return null;
+                }
+                @Override
+                public Version version() {
+                    return null;
+                }
+            };
+        } else {
+            return super.run();
+        }
+    }
     @Override
     protected java.net.http.HttpRequest.Builder finalizeRequestPreBuild(
             java.net.http.HttpRequest.Builder requestBuild) throws FailedResponseException{

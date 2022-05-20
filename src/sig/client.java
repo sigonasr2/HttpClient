@@ -1,5 +1,6 @@
 package sig;
 import java.net.http.HttpResponse;
+import java.nio.file.Path;
 
 import sig.exceptions.FailedResponseException;
 import sig.requests.GETRequest;
@@ -36,13 +37,18 @@ public class client {
                 System.out.println(((HttpResponse<String>)res.run()).body());
             */
 
+            /*
             //Regular POST request with body:
             POSTRequest postRes = new POSTRequest("https://postman-echo.com/post","Test body");
             System.out.println(((HttpResponse<String>)postRes.run()).body());
 
             //POST request with body and headers:
             postRes = new POSTRequest("https://postman-echo.com/post","Test body", 30000, "header1","value1", "header2","value2");
+            System.out.println(((HttpResponse<String>)postRes.run()).body());*/
+
+            POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of(".gitignore"));
             System.out.println(((HttpResponse<String>)postRes.run()).body());
+
 
         } catch (FailedResponseException e) {
             e.printStackTrace();
