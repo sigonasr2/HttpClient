@@ -1,5 +1,0 @@
-cd /workspace/HttpClient
-javac -Xlint:unchecked -cp . sig/client.java
-printf "\n\n\nRunning Program...\n\n"
-java sig.client
-./clean
