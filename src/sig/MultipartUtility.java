@@ -92,19 +92,18 @@ public class MultipartUtility {
                         + URLConnection.guessContentTypeFromName(fileName))
                 .append(LINE_FEED);
         writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
-        writer.append(LINE_FEED);
         writer.flush();
  
         FileInputStream inputStream = new FileInputStream(uploadFile);
-        byte[] buffer = new byte[4096];
+        char[] buffer = new char[1024];
+        String s = new String(buffer);
+        byte[] data = s.getBytes("ISO-8859-1");
         int bytesRead = -1;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
+        while ((bytesRead = inputStream.read(data)) > 0) {
+            outputStream.write(data, 0, bytesRead);
         }
-        outputStream.flush();
         inputStream.close();
          
-        writer.append(LINE_FEED);
         writer.flush();    
     }
  
@@ -127,7 +126,7 @@ public class MultipartUtility {
     public List<String> finish() throws IOException {
         List<String> response = new ArrayList<String>();
  
-        writer.append(LINE_FEED).flush();
+        writer.flush();
         writer.append("--" + boundary + "--").append(LINE_FEED);
         writer.close();
  
@@ -143,7 +142,7 @@ public class MultipartUtility {
             reader.close();
             httpConn.disconnect();
         } else {
-            throw new IOException("Server returned non-OK status: " + status);
+            System.out.println("Server returned non-OK status: " + status);
         }
  
         return response;
