@@ -46,10 +46,8 @@ public class client {
             postRes = new POSTRequest("https://postman-echo.com/post","Test body", 30000, "header1","value1", "header2","value2");
             System.out.println(((HttpResponse<String>)postRes.run()).body());*/
 
-            POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of(".gitignore"));
+            POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of("..",".gitignore"));
             System.out.println(((HttpResponse<String>)postRes.run()).body());
-
-
         } catch (FailedResponseException e) {
             e.printStackTrace();
         }

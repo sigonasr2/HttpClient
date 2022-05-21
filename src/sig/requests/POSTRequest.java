@@ -1,6 +1,8 @@
 package sig.requests;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
@@ -8,10 +10,12 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpClient.Builder;
 import java.net.http.HttpClient.Version;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 import javax.net.ssl.SSLSession;
 
+import sig.MultipartUtility;
 import sig.exceptions.FailedResponseException;
 
 public class POSTRequest extends GETRequest{
@@ -46,40 +50,60 @@ public class POSTRequest extends GETRequest{
     @Override
     public HttpResponse<?> run() throws FailedResponseException {
         if (uploadFile!=null) {
-            return new HttpResponse<String>(){
-                @Override
-                public int statusCode() {
-                    return 0;
-                }
-                @Override
-                public HttpRequest request() {
-                    return null;
-                }
-                @Override
-                public Optional<HttpResponse<String>> previousResponse() {
-                    return null;
-                }
-                @Override
-                public HttpHeaders headers() {
-                    return null;
-                }
-                @Override
-                public String body() {
-                    return "Response";
-                }
-                @Override
-                public Optional<SSLSession> sslSession() {
-                    return null;
-                }
-                @Override
-                public URI uri() {
-                    return null;
-                }
-                @Override
-                public Version version() {
-                    return null;
-                }
-            };
+            String charset = "UTF-8";
+            File file = uploadFile.toFile();
+            String requestURL = url;
+     
+            try {
+                MultipartUtility multipart = new MultipartUtility(requestURL, charset);
+                 
+                multipart.addHeaderField("User-Agent", "SIG HTTPCLIENT");
+                 
+                multipart.addFilePart("fileUpload", file);
+     
+                List<String> response = multipart.finish();
+                return new HttpResponse<String>(){
+                    @Override
+                    public int statusCode() {
+                        return 0;
+                    }
+                    @Override
+                    public HttpRequest request() {
+                        return null;
+                    }
+                    @Override
+                    public Optional<HttpResponse<String>> previousResponse() {
+                        return null;
+                    }
+                    @Override
+                    public HttpHeaders headers() {
+                        return null;
+                    }
+                    @Override
+                    public String body() {
+                        StringBuilder sb = new StringBuilder();
+                        for (String s : response) {
+                            sb.append(s);
+                        }
+                        return sb.toString();
+                    }
+                    @Override
+                    public Optional<SSLSession> sslSession() {
+                        return null;
+                    }
+                    @Override
+                    public URI uri() {
+                        return null;
+                    }
+                    @Override
+                    public Version version() {
+                        return null;
+                    }
+                };
+            } catch (IOException ex) {
+                System.err.println(ex);
+                throw new FailedResponseException("Could not send response for POST File upload. THIS SHOULD NOT BE HAPPENING!");
+            }
         } else {
             return super.run();
         }
