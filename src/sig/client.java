@@ -37,17 +37,18 @@ public class client {
                 System.out.println(((HttpResponse<String>)res.run()).body());
             */
 
-            /*
             //Regular POST request with body:
-            POSTRequest postRes = new POSTRequest("https://postman-echo.com/post","Test body");
+            POSTRequest postRes = new POSTRequest("https://8080-sigonasr2-sigplace-5j5fknii87n.ws-us54.gitpod.io/","Test a longer body\nwith much more\nlines now.\n\n");
             System.out.println(((HttpResponse<String>)postRes.run()).body());
 
+            /*
             //POST request with body and headers:
             postRes = new POSTRequest("https://postman-echo.com/post","Test body", 30000, "header1","value1", "header2","value2");
             System.out.println(((HttpResponse<String>)postRes.run()).body());*/
 
-            POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of("..",".gitignore"));
-            System.out.println(((HttpResponse<String>)postRes.run()).body());
+            //POST request with a file.
+            //POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of("..",".gitignore"));
+            //System.out.println(((HttpResponse<String>)postRes.run()).body());
         } catch (FailedResponseException e) {
             e.printStackTrace();
         }
