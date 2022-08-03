@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.net.http.HttpResponse;
 
+import sig.requests.GETRequest;
 import sig.requests.POSTRequest;
 
 public class client {
@@ -86,7 +87,8 @@ public class client {
             obj.put("version","1");
             obj.put("condition",condition);
             obj.put("transport",transport);
-
+            GETRequest res = new GETRequest("https://api.twitch.tv/helix/eventsub/subscriptions",30000,"Authorization","Bearer vk5jyguposazau2gc1e0kjktv5xc4y","Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
+                System.out.println(((HttpResponse<String>)res.run()).body());
             /*
              * {"data":[{"id":"39404108","login":"sigonitori","display_name":"SigoNitori","type":"","broadcaster_type":"","description":"Hey there! I go by sigonasr2 or Sig. Japanese rhythm game nerd, dream is to have an arcade-inspired home setup for all my favs. I am also a hobbyist computer programmer. Been developing software since I was a kid and it's absolutely my passion. All things programming is right up my alley!","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/814bbf2a-edb2-458b-b402-6e457f5598ab-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/22ce77ee-5900-4a7f-9e3e-ca28f19ded06-channel_offline_image-1920x1080.png","view_count":122300,"created_at":"2013-01-17T09:46:14Z"}]}
              */
@@ -99,8 +101,8 @@ public class client {
 
             
             //POST request with body and headers:
-            POSTRequest postRes = new POSTRequest("https://api.twitch.tv/helix/eventsub/subscriptions",JSON(obj), 30000,"Authorization","Bearer vk5jyguposazau2gc1e0kjktv5xc4y","Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
-            System.out.println(((HttpResponse<String>)postRes.run()).body());
+            //POSTRequest postRes = new POSTRequest("https://api.twitch.tv/helix/eventsub/subscriptions",JSON(obj), 30000,"Authorization","Bearer vk5jyguposazau2gc1e0kjktv5xc4y","Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
+            //System.out.println(((HttpResponse<String>)postRes.run()).body());
 
             //POST request with a file.
             //POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of("..",".gitignore"));
