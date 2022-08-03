@@ -81,12 +81,13 @@ public class client {
             HashMap<String,Object> transport = new HashMap<>();
             condition.put("broadcaster_user_id","39404108");
             transport.put("method","webhook");
-            transport.put("callback","https://projectdivar.com/twitch/streamonline");
+            transport.put("callback","https://projectdivar.com/twitch/streamoffline");
             transport.put("secret",SECRET);
-            obj.put("type","stream.online");
+            obj.put("type","stream.offline");
             obj.put("version","1");
             obj.put("condition",condition);
             obj.put("transport",transport);
+            //obj.put("challenge","testKey");
             GETRequest res = new GETRequest("https://api.twitch.tv/helix/eventsub/subscriptions",30000,"Authorization","Bearer vk5jyguposazau2gc1e0kjktv5xc4y","Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
                 System.out.println(((HttpResponse<String>)res.run()).body());
             /*
