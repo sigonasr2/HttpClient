@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.net.http.HttpResponse;
+
+import sig.requests.POSTRequest;
 
 public class client {
     static String SECRET = "";
@@ -77,7 +80,7 @@ public class client {
             HashMap<String,Object> transport = new HashMap<>();
             condition.put("broadcaster_user_id","39404108");
             transport.put("method","webhook");
-            transport.put("callback","http://projectdivar.com/twitch/streamonline");
+            transport.put("callback","https://projectdivar.com/twitch/streamonline");
             transport.put("secret",SECRET);
             obj.put("type","stream.online");
             obj.put("version","1");
@@ -96,9 +99,8 @@ public class client {
 
             
             //POST request with body and headers:
-            //POSTRequest postRes = new POSTRequest("https://api.twitch.tv/helix/eventsub/subscriptions",JSON(obj), 30000);
-            //System.out.println(((HttpResponse<String>)postRes.run()).body());
-            System.out.println(JSON(obj));
+            POSTRequest postRes = new POSTRequest("https://api.twitch.tv/helix/eventsub/subscriptions",JSON(obj), 30000,"Authorization","Bearer vk5jyguposazau2gc1e0kjktv5xc4y","Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
+            System.out.println(((HttpResponse<String>)postRes.run()).body());
 
             //POST request with a file.
             //POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of("..",".gitignore"));
