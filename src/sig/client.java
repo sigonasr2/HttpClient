@@ -1,15 +1,8 @@
 package sig;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-
-import sig.exceptions.FailedResponseException;
-import sig.requests.GETRequest;
-import sig.requests.POSTRequest;
 
 public class client {
     static String SECRET = "";
@@ -22,7 +15,7 @@ public class client {
             int marker=1;
             boolean ending=false;
             while (marker<temp.length()) { 
-                if (!ending&&temp.charAt(marker)!=' '&&temp.charAt(marker)!='{'&&temp.charAt(marker)!='}') {
+                if (!ending&&temp.charAt(marker)!=' '&&temp.charAt(marker)!='{'&&temp.charAt(marker)!='}'&&temp.charAt(marker)!=',') {
                     ending=true;
                     sb.append("\"");
                 } else 
@@ -77,27 +70,40 @@ public class client {
                 res = new GETRequest("https://postman-echo.com/basic-auth","postman","password",30000,null);
                 System.out.println(((HttpResponse<String>)res.run()).body());
             */
-            /*GETRequest res = new GETRequest("https://api.twitch.tv/helix/users?login=sigonitori",30000,"Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
+            /*GETRequest res = new GETRequest("https://api.twitch.tv/helix/users?login=sigonitori",30000,"Authorization","Bearer vk5jyguposazau2gc1e0kjktv5xc4y","Client-Id","otppg8l1x7xbrfnqex1np1qba47mzf");
             System.out.println(((HttpResponse<String>)res.run()).body());*/
-            HashMap<String,Object> obj = new HashMap();
+            HashMap<String,Object> obj = new HashMap<>();
+            HashMap<String,Object> condition = new HashMap<>();
+            HashMap<String,Object> transport = new HashMap<>();
+            condition.put("broadcaster_user_id","39404108");
+            transport.put("method","webhook");
+            transport.put("callback","http://projectdivar.com/twitch/streamonline");
+            transport.put("secret",SECRET);
             obj.put("type","stream.online");
             obj.put("version","1");
-            obj.put("version","1");
-
-            //Regular POST request with body:
-            POSTRequest postRes = new POSTRequest("https://id.twitch.tv/oauth2/token","client_id=otppg8l1x7xbrfnqex1np1qba47mzf&client_secret="+SECRET+"&grant_type=client_credentials");
-            postRes.setContentType("application/x-www-form-urlencoded");
-            System.out.println(((HttpResponse<String>)postRes.run()).body());
+            obj.put("condition",condition);
+            obj.put("transport",transport);
 
             /*
-            //POST request with body and headers:
-            postRes = new POSTRequest("https://postman-echo.com/post","Test body", 30000, "header1","value1", "header2","value2");
+             * {"data":[{"id":"39404108","login":"sigonitori","display_name":"SigoNitori","type":"","broadcaster_type":"","description":"Hey there! I go by sigonasr2 or Sig. Japanese rhythm game nerd, dream is to have an arcade-inspired home setup for all my favs. I am also a hobbyist computer programmer. Been developing software since I was a kid and it's absolutely my passion. All things programming is right up my alley!","profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/814bbf2a-edb2-458b-b402-6e457f5598ab-profile_image-300x300.png","offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/22ce77ee-5900-4a7f-9e3e-ca28f19ded06-channel_offline_image-1920x1080.png","view_count":122300,"created_at":"2013-01-17T09:46:14Z"}]}
+             */
+
+            //Get a new twitch oauth token:
+            //oauth: vk5jyguposazau2gc1e0kjktv5xc4y
+            /*POSTRequest postRes = new POSTRequest("https://id.twitch.tv/oauth2/token","client_id=otppg8l1x7xbrfnqex1np1qba47mzf&client_secret="+SECRET+"&grant_type=client_credentials");
+            postRes.setContentType("application/x-www-form-urlencoded");
             System.out.println(((HttpResponse<String>)postRes.run()).body());*/
+
+            
+            //POST request with body and headers:
+            //POSTRequest postRes = new POSTRequest("https://api.twitch.tv/helix/eventsub/subscriptions",JSON(obj), 30000);
+            //System.out.println(((HttpResponse<String>)postRes.run()).body());
+            System.out.println(JSON(obj));
 
             //POST request with a file.
             //POSTRequest postRes = new POSTRequest("https://postman-echo.com/post",Path.of("..",".gitignore"));
             //System.out.println(((HttpResponse<String>)postRes.run()).body());
-        } catch (FailedResponseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
