@@ -22,6 +22,11 @@ public class POSTRequest extends GETRequest{
 
     String body = "";
     Path uploadFile = null;
+    String contentType = "application/json";
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
     public POSTRequest(String url, String body, String username, String password, long timeout, Path outputFile, String... headers) {
         super(url, username, password, timeout, outputFile, headers);
@@ -111,7 +116,7 @@ public class POSTRequest extends GETRequest{
     @Override
     protected java.net.http.HttpRequest.Builder finalizeRequestPreBuild(
             java.net.http.HttpRequest.Builder requestBuild) throws FailedResponseException{
-                requestBuild.headers("Content-Type","application/json");
+                requestBuild.headers("Content-Type",contentType);
         try {
             return file!=null?requestBuild.POST(HttpRequest.BodyPublishers.ofFile(file)):
             body.length()>0?requestBuild.POST(HttpRequest.BodyPublishers.ofString(body)):
